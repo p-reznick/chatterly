@@ -15,7 +15,7 @@ app.get('/test', function (req, res) {
             res.status(501).send(err.message);
             return;
         }
-        connection.query('SELECT col FROM test', function (err, results, fields) {
+        connection.query('SELECT * FROM rooms', function (err, results, fields) {
             if (err) {
                 res.status(501).send(err.message);
                 connection.release();
@@ -23,7 +23,7 @@ app.get('/test', function (req, res) {
             }
 
             res.json({
-                result: results[0].col,
+                result: results,
                 backend: 'nodejs',
             });
             connection.release();
