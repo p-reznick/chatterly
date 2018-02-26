@@ -9,6 +9,11 @@ const db = mysql.createPool({
     database: 'challenge',
 });
 
+// login user GET users/:id
+// send message POST messages
+// fetch messages GET messages
+// fetch new messages
+
 app.get('/test', function (req, res) {
     db.getConnection(function (err, connection) {
         if (err) {
