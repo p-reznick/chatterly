@@ -7,7 +7,7 @@ CREATE TABLE rooms (
 
 CREATE TABLE users (
   id serial primary key,
-  handle varchar(25) NOT NULL
+  handle varchar(25) NOT NULL UNIQUE
 );
 
 CREATE TABLE comments (
