@@ -54,8 +54,28 @@ app.post('/users/:handle/comments/:body', function (req, res) {
   });
 });
 
+// get all comments for given room
+app.get('/rooms/:room_id/comments', function(req, res) {
+  db.getConnection(function (err, connection) {
+    if (err) {
+      res.status(500).send(err.message);
+      connection.release();
+      return;
+    }
+    const room_id = req.params['room_id'];
+    const sql = "SELECT comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE users.id = 1";
+    connection.query(sql, [room_id], function(err, results, field) {
+      if (err) {
+        res.status(500).send(err.message);
+        connection.release();
+        return;
+      }
+      res.json(results);
+    });
+  });
+});
+
 function getUserID(handle) {
-  let user_id;
   db.getConnection(function (err, connection) {
     const sql = 'SELECT id FROM users WHERE handle = ?';
     connection.query(sql, [handle], function(err, results, field) {
