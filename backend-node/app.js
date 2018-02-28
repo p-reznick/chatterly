@@ -33,23 +33,27 @@ app.post('/users/:handle', function (req, res) {
 // create user comment in message board
 app.post('/users/:handle/comments/:body', function (req, res) {
   db.getConnection(function (err, connection) {
-    if (err) {
-        res.status(501).send(err.message);
-        return;
-    }
     const handle = req.params['handle'];
-    const user_id = getUserID(handle);
-    const body = req.params['body'];
-    const room_id = 0; // update later to accommodate multiple rooms.
-    const sql = 'INSERT INTO comments (user_id, body, room_id) VALUES (?, ?, ?)'
-    connection.query(sql, [user_id, body, room_id], function (err, results, field) {
+    const sql = 'SELECT id FROM users WHERE handle = ?';
+    connection.query(sql, [handle], function(err, results, field) {
       if (err) {
-          res.status(501).send(err.message);
-          connection.release();
-          return;
+        res.status(501).send(err.message);
+        connection.release();
+        return;
       }
-      res.status(201);
-      res.send(req.params['handle'] + ' delivered!');
+      const userId = results[0];
+      const body = req.params['body'];
+      const roomId = 1; // update later to accommodate multiple rooms.
+      const sql = 'INSERT INTO comments (user_id, body, room_id) VALUES (?, ?, ?)'
+      connection.query(sql, [userId, body, roomId], function (err, results, field) {
+        if (err) {
+            res.status(501).send(err.message);
+            connection.release();
+            return;
+        }
+        res.status(201);
+        res.send(req.params['handle'] + ' delivered!');
+      });
     });
   });
 });
@@ -63,7 +67,7 @@ app.get('/rooms/:room_id/comments', function(req, res) {
       return;
     }
     const room_id = req.params['room_id'];
-    const sql = "SELECT comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE users.id = 1";
+    const sql = "SELECT comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE comments.room_id = ?";
     connection.query(sql, [room_id], function(err, results, field) {
       if (err) {
         res.status(500).send(err.message);
@@ -75,19 +79,63 @@ app.get('/rooms/:room_id/comments', function(req, res) {
   });
 });
 
-function getUserID(handle) {
+// utility apis
+app.get('/rooms', function(req, res) {
   db.getConnection(function (err, connection) {
-    const sql = 'SELECT id FROM users WHERE handle = ?';
-    connection.query(sql, [handle], function(err, results, field) {
+    if (err) {
+      res.status(500).send(err.message);
+      connection.release();
+      return;
+    }
+    const sql = "SELECT * FROM rooms";
+    connection.query(sql, function(err, results, field) {
       if (err) {
-        res.status(501).send(err.message);
+        res.status(500).send(err.message);
         connection.release();
         return;
       }
-      return results[0];
+      res.json(results);
     });
   });
-}
+});
+
+app.get('/comments', function(req, res) {
+  db.getConnection(function (err, connection) {
+    if (err) {
+      res.status(500).send(err.message);
+      connection.release();
+      return;
+    }
+    const sql = "SELECT * FROM comments";
+    connection.query(sql, function(err, results, field) {
+      if (err) {
+        res.status(500).send(err.message);
+        connection.release();
+        return;
+      }
+      res.json(results);
+    });
+  });
+});
+
+app.get('/users', function(req, res) {
+  db.getConnection(function (err, connection) {
+    if (err) {
+      res.status(500).send(err.message);
+      connection.release();
+      return;
+    }
+    const sql = "SELECT * FROM users";
+    connection.query(sql, function(err, results, field) {
+      if (err) {
+        res.status(500).send(err.message);
+        connection.release();
+        return;
+      }
+      res.json(results);
+    });
+  });
+});
 
 app.listen(8000, function() {
     console.log('Listening on port 8000');

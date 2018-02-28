@@ -19,12 +19,3 @@ CREATE TABLE comments (
 
 INSERT INTO rooms (name)
 VALUES ('main');
-
-INSERT INTO comments (user_id, body, room_id)
-VALUES
-(1, 'blah blah', 0),
-(1, 'blah blah', 0),
-(1, 'blah blah', 0),
-(1, 'blah blah', 0),
-(1, 'blah blah', 0),
-(1, 'blah blah', 0);
