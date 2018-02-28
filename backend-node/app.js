@@ -16,8 +16,8 @@ app.get('/users/:handle', function (req, res) {
         res.status(501).send(err.message);
         return;
     }
-    const sql = 'GET users.id';
-    const handle = req.params['handle']
+    const sql = 'SELECT users.id FROM users WHERE handle = ?';
+    const handle = req.params['handle'];
     connection.query(sql, [handle], function (err, results, field) {
       if (err) {
           res.status(501).send(err.message);
@@ -25,10 +25,12 @@ app.get('/users/:handle', function (req, res) {
           return;
       }
       res.status(200);
-      res.send(handle + ' written into users!');
+      const userIdObj = { user_id: results[0] }
+      res.json(userIdObj);
     });
   });
 });
+
 // create user POST users/:handle
 app.post('/users/:handle', function (req, res) {
   db.getConnection(function (err, connection) {
