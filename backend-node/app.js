@@ -79,9 +79,9 @@ app.get('/rooms/:room_id/comments', function(req, res) {
       connection.release();
       return;
     }
-    const room_id = req.params['room_id'];
+    const roomId = req.params['room_id'];
     const sql = "SELECT comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE comments.room_id = ?";
-    connection.query(sql, [room_id], function(err, results, field) {
+    connection.query(sql, [roomId], function(err, results, field) {
       if (err) {
         res.status(500).send(err.message);
         connection.release();
