@@ -10,6 +10,25 @@ const db = mysql.createPool({
 });
 
 // login user GET users/:id
+app.get('/users/:handle', function (req, res) {
+  db.getConnection(function (err, connection) {
+    if (err) {
+        res.status(501).send(err.message);
+        return;
+    }
+    const sql = 'GET users.id';
+    const handle = req.params['handle']
+    connection.query(sql, [handle], function (err, results, field) {
+      if (err) {
+          res.status(501).send(err.message);
+          connection.release();
+          return;
+      }
+      res.status(200);
+      res.send(handle + ' written into users!');
+    });
+  });
+});
 // create user POST users/:handle
 app.post('/users/:handle', function (req, res) {
   db.getConnection(function (err, connection) {
@@ -18,42 +37,34 @@ app.post('/users/:handle', function (req, res) {
         return;
     }
     const sql = 'INSERT INTO users (handle) VALUES (?)';
-    connection.query(sql, [req.params['handle']], function (err, results, field) {
+    const handle = req.params['handle']
+    connection.query(sql, [handle], function (err, results, field) {
       if (err) {
           res.status(501).send(err.message);
           connection.release();
           return;
       }
       res.status(201);
-      res.send(req.params['handle'] + ' delivered!');
+      res.send(handle + ' written into users!');
     });
   });
 });
 
-// create user comment in message board
-app.post('/users/:handle/comments/:body', function (req, res) {
+// create user comment in chat room
+app.post('/rooms/:room_id/users/:user_id/comments/:body', function (req, res) {
   db.getConnection(function (err, connection) {
-    const handle = req.params['handle'];
-    const sql = 'SELECT id FROM users WHERE handle = ?';
-    connection.query(sql, [handle], function(err, results, field) {
+    const userId = req.params['user_id'];
+    const body = req.params['body'];
+    const roomId = req.params['room_id']
+    const sql = 'INSERT INTO comments (user_id, body, room_id) VALUES (?, ?, ?)'
+    connection.query(sql, [userId, body, roomId], function (err, results, field) {
       if (err) {
-        res.status(501).send(err.message);
-        connection.release();
-        return;
+          res.status(501).send(err.message);
+          connection.release();
+          return;
       }
-      const userId = results[0];
-      const body = req.params['body'];
-      const roomId = 1; // update later to accommodate multiple rooms.
-      const sql = 'INSERT INTO comments (user_id, body, room_id) VALUES (?, ?, ?)'
-      connection.query(sql, [userId, body, roomId], function (err, results, field) {
-        if (err) {
-            res.status(501).send(err.message);
-            connection.release();
-            return;
-        }
-        res.status(201);
-        res.send(req.params['handle'] + ' delivered!');
-      });
+      res.status(201);
+      res.send(body + ' written into comments!');
     });
   });
 });
@@ -69,6 +80,28 @@ app.get('/rooms/:room_id/comments', function(req, res) {
     const room_id = req.params['room_id'];
     const sql = "SELECT comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE comments.room_id = ?";
     connection.query(sql, [room_id], function(err, results, field) {
+      if (err) {
+        res.status(500).send(err.message);
+        connection.release();
+        return;
+      }
+      res.json(results);
+    });
+  });
+});
+
+// get all comments for given room after a particular comment
+app.get('/rooms/:room_id/comments/:last_comment_id', function(req, res) {
+  db.getConnection(function (err, connection) {
+    if (err) {
+      res.status(500).send(err.message);
+      connection.release();
+      return;
+    }
+    const roomId = req.params['room_id'];
+    const lastId = req.params['last_comment_id'];
+    const sql = "SELECT comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE comments.room_id = ? AND comments.id > ?";
+    connection.query(sql, [roomId, lastId], function(err, results, field) {
       if (err) {
         res.status(500).send(err.message);
         connection.release();
