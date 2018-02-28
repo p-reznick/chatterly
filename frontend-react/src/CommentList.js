@@ -3,7 +3,7 @@ import Comment from './Comment';
 
 class CommentList extends Component {
   render() {
-    const allComments = this.props.comments.map((comment) => (
+    const comments = this.props.comments.map((comment) => (
       <Comment
         key={'comment-' + comment.id}
         handle={comment.handle}
@@ -14,7 +14,7 @@ class CommentList extends Component {
     return (
       <div>
         <h1>Current Comments</h1>
-        {allComments}
+        {comments}
       </div>
     );
   }

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import CommentList from './CommentList';
+import Room from './Room'
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      comments: []
+      comments: [],
+      roomId: 1,
+      userId: -1
     };
   }
 
@@ -13,7 +15,8 @@ class App extends Component {
     return (
       <div>
         <h1>Welcome to Chatterly!</h1>
-        <CommentList
+        <Room
+          room_id={this.state.roomId}
           comments={this.state.comments}
         />
       </div>
