@@ -1,21 +1,31 @@
 import React, { Component } from 'react';
+import CommentList from './CommentList';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      comments: []
+    };
+  }
+
   render() {
     return (
       <div>
-        <h1>Hello</h1>
-        <pre>state = {JSON.stringify(this.state, undefined, '  ')}</pre>
+        <h1>Welcome to Chatterly!</h1>
+        <CommentList
+          comments={this.state.comments}
+        />
       </div>
     );
   }
   componentDidMount() {
-    fetch('/test').then((res) => {
+    fetch('/comments').then((res) => {
       return res.json();
     }).then((res) => {
-      this.setState({res});
+      this.setState({ comments: res });
     }).catch((err) => {
-      this.setState({err});
+      this.setState({ err });
     });
   }
 }
