@@ -13,7 +13,7 @@ class CommentList extends Component {
 
     return (
       <div>
-        <h1>Current Comments</h1>
+        <h3>Current Comments</h3>
         {comments}
       </div>
     );

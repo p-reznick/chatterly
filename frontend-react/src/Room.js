@@ -5,9 +5,12 @@ class Room extends Component {
   render() {
     const comments = this.props.comments;
     return (
-      <CommentList
-        comments={comments}
-      />
+      <div>
+        <h2>Current Room</h2>
+        <CommentList
+          comments={comments}
+        />
+      </div>
     );
   }
 }
