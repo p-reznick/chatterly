@@ -47,7 +47,7 @@ app.post('/users/:handle', function (req, res) {
           return;
       }
       res.status(201);
-      res.send(handle + ' written into users!');
+      res.json();
     });
   });
 });

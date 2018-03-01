@@ -6,14 +6,17 @@ import LogoutButton from './LogoutButton';
 class Room extends Component {
   render() {
     const comments = this.props.comments;
+    const logoutUser = this.props.logout_user;
     const userId = this.props.user_id;
     const roomId = this.props.room_id;
+    const handle = this.props.handle;
+    console.log(this.props);
     return (
       <div>
         <h2>Current Room</h2>
-        <p>Welcome,
+        <p>Logged in as {handle}</p>
         <LogoutButton
-          logout_user={this.props.logout_user}
+          logout_user={logoutUser}
         />
         <CommentList
           comments={comments}

@@ -8,18 +8,26 @@ class App extends Component {
     this.state = {
       comments: [],
       roomId: 1,
-      userId: -1
+      userId: -1,
+      handle: ''
     };
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
   }
 
-  loginUser(userId) {
-    this.setState({ userId });
+  loginUser(userId, handle) {
+    this.setState({
+      userId: userId,
+      handle: handle
+    });
   }
 
-  logoutUser() {
-    this.setState({ userId: -1 });
+  logoutUser(event) {
+    event.preventDefault();
+    this.setState({
+      userId: -1,
+      handle: ''
+    });
   }
 
   render() {
@@ -36,10 +44,11 @@ class App extends Component {
       content = (
         <div id="chatroom">
           <Room
-            logout_user={this.state.logoutUser}
+            logout_user={this.logoutUser}
             room_id={this.state.roomId}
             comments={this.state.comments}
             user_id={this.state.userId}
+            handle={this.state.handle}
           />
         </div>
       );

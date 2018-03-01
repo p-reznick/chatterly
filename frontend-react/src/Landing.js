@@ -27,6 +27,8 @@ class Landing extends Component {
     const url = 'users/' + this.state.newHandle;
     fetch(url, {
       method: 'POST'
+    }).then(() => {
+      fetch(url);
     });
     this.setState({ newHandle: '' });
   }
@@ -39,7 +41,7 @@ class Landing extends Component {
       res.json()
     )).then((res) => {
       const userId = res.user_id.id;
-      loginUser(userId);
+      loginUser(userId, this.state.existingHandle);
     });
     this.setState({ existingHandle: '' });
   }
