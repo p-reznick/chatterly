@@ -8,16 +8,32 @@ class App extends Component {
     this.state = {
       comments: [],
       roomId: 1,
-      userId: 1
+      userId: -1
     };
+    this.loginUser = this.loginUser.bind(this);
+    this.logoutUser = this.logoutUser.bind(this);
+  }
+
+  loginUser(userId) {
+    this.setState({ userId });
+  }
+
+  logoutUser() {
+    this.setState({ userId: -1 });
   }
 
   render() {
-    return (
-      <div>
+    let content;
+    if (this.state.userId === -1) {
+      content = (
         <div id="landing_page">
-          <Landing />
+          <Landing
+            login_user={this.loginUser}
+          />
         </div>
+      );
+    } else {
+      content = (
         <div id="chatroom">
           <Room
             room_id={this.state.roomId}
@@ -25,6 +41,11 @@ class App extends Component {
             user_id={this.state.userId}
           />
         </div>
+      );
+    }
+    return (
+      <div>
+        {content}
       </div>
     );
   }

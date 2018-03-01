@@ -32,12 +32,14 @@ class Landing extends Component {
   }
 
   handleLogin(event) {
+    const loginUser = this.props.login_user;
     event.preventDefault();
     const url = 'users/' + this.state.existingHandle;
     fetch(url).then((res) => (
       res.json()
     )).then((res) => {
-      console.log(res);
+      const userId = res.user_id.id;
+      loginUser(userId);
     });
     this.setState({ existingHandle: '' });
   }
