@@ -7,7 +7,7 @@ class App extends Component {
     this.state = {
       comments: [],
       roomId: 1,
-      userId: -1
+      userId: 1
     };
   }
 
@@ -18,6 +18,7 @@ class App extends Component {
         <Room
           room_id={this.state.roomId}
           comments={this.state.comments}
+          user_id={this.state.userId}
         />
       </div>
     );
