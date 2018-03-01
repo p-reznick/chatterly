@@ -18,7 +18,6 @@ class CommentInput extends Component {
     const roomId = this.props.room_id;
     event.preventDefault();
     const url = 'rooms/' + roomId + '/users/' + userId + '/comments/' + this.state.newComment;
-    alert(url);
     fetch(url, {
       method: 'POST'
     });

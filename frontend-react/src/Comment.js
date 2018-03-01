@@ -5,9 +5,9 @@ class Comment extends Component {
     const body = this.props.body;
     const handle = this.props.handle;
     return (
-      <div class="comment">
-        <span class="handle">{handle}</span>
-        <span class="body">{body}</span>
+      <div>
+        <span>{handle}:   </span>
+        <span>{body}</span>
       </div>
     );
   }
