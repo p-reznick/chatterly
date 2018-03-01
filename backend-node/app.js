@@ -80,7 +80,7 @@ app.get('/rooms/:room_id/comments', function(req, res) {
       return;
     }
     const roomId = req.params['room_id'];
-    const sql = "SELECT comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE comments.room_id = ?";
+    const sql = "SELECT comments.id, comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE comments.room_id = ?";
     connection.query(sql, [roomId], function(err, results, field) {
       if (err) {
         res.status(500).send(err.message);
