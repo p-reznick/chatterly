@@ -24,7 +24,8 @@ class App extends Component {
     );
   }
   componentDidMount() {
-    fetch('/comments').then((res) => {
+    fetch('/rooms/1/comments').then((res) => {
+      alert(res);
       return res.json();
     }).then((res) => {
       this.setState({ comments: res });
