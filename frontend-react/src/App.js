@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Room from './Room'
+import Landing from './Landing';
+import Room from './Room';
 
 class App extends Component {
   constructor() {
@@ -14,12 +15,16 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>Welcome to Chatterly!</h1>
-        <Room
-          room_id={this.state.roomId}
-          comments={this.state.comments}
-          user_id={this.state.userId}
-        />
+        <div id="landing_page">
+          <Landing />
+        </div>
+        <div id="chatroom">
+          <Room
+            room_id={this.state.roomId}
+            comments={this.state.comments}
+            user_id={this.state.userId}
+          />
+        </div>
       </div>
     );
   }
