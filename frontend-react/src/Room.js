@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CommentList from './CommentList';
 import CommentInput from './CommentInput';
+import LogoutButton from './LogoutButton';
 
 class Room extends Component {
   render() {
@@ -10,6 +11,10 @@ class Room extends Component {
     return (
       <div>
         <h2>Current Room</h2>
+        <p>Welcome,
+        <LogoutButton
+          logout_user={this.props.logout_user}
+        />
         <CommentList
           comments={comments}
         />

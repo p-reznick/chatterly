@@ -36,6 +36,7 @@ class App extends Component {
       content = (
         <div id="chatroom">
           <Room
+            logout_user={this.state.logoutUser}
             room_id={this.state.roomId}
             comments={this.state.comments}
             user_id={this.state.userId}
