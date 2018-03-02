@@ -1,14 +1,6 @@
-const mysql = require('mysql');
-const db = mysql.createPool({
-    host: 'db',
-    user: 'root',
-    password: 'testpass',
-    database: 'challenge',
-});
-
 const Utility = {
   getAllRooms: function(req, res) {
-    db.getConnection(function (err, connection) {
+    this.db.getConnection(function (err, connection) {
       if (err) {
         res.status(500).send(err.message);
         connection.release();
@@ -26,7 +18,7 @@ const Utility = {
     });
   },
   getAllComments: function(req, res) {
-    db.getConnection(function (err, connection) {
+    this.db.getConnection(function (err, connection) {
       if (err) {
         res.status(500).send(err.message);
         connection.release();
@@ -44,7 +36,7 @@ const Utility = {
     });
   },
   getAllUsers: function(req, res) {
-    db.getConnection(function (err, connection) {
+    this.db.getConnection(function (err, connection) {
       if (err) {
         res.status(500).send(err.message);
         connection.release();

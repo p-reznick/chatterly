@@ -1,14 +1,6 @@
-const mysql = require('mysql');
-const db = mysql.createPool({
-    host: 'db',
-    user: 'root',
-    password: 'testpass',
-    database: 'challenge',
-});
-
 const Rooms = {
   createComment: function (req, res) {
-    db.getConnection(function (err, connection) {
+    this.db.getConnection(function (err, connection) {
       const userId = req.params['user_id'];
       const body = req.params['body'];
       const roomId = req.params['room_id']
@@ -25,7 +17,7 @@ const Rooms = {
     });
   },
   getComments: function(req, res) {
-    db.getConnection(function (err, connection) {
+    this.db.getConnection(function (err, connection) {
       if (err) {
         res.status(500).send(err.message);
         connection.release();
@@ -44,7 +36,7 @@ const Rooms = {
     });
   },
   getNewComments: function(req, res) {
-    db.getConnection(function (err, connection) {
+    this.db.getConnection(function (err, connection) {
       if (err) {
         res.status(500).send(err.message);
         connection.release();

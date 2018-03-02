@@ -1,14 +1,6 @@
-const mysql = require('mysql');
-const db = mysql.createPool({
-    host: 'db',
-    user: 'root',
-    password: 'testpass',
-    database: 'challenge',
-});
-
 const Users = {
   login: function (req, res) {
-    db.getConnection(function (err, connection) {
+    this.db.getConnection(function (err, connection) {
       if (err) {
           res.status(501).send(err.message);
           return;
@@ -27,7 +19,7 @@ const Users = {
     });
   },
   createHandle: function (req, res) {
-    db.getConnection(function (err, connection) {
+    this.db.getConnection(function (err, connection) {
       if (err) {
           res.status(501).send(err.message);
           return;
