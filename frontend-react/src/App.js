@@ -15,17 +15,24 @@ class App extends Component {
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
     this.refreshComments = this.refreshComments.bind(this);
+    this.handleError = this.handleError.bind(this);
     this.pollForComments();
   }
 
+  handleError(errorMessage) {
+    this.setState({ errorMessage });
+  }
+
   pollForComments() {
-    setInterval(this.refreshComments, 100);
+    const stopPolling = setInterval(this.refreshComments, 100);
+    this.setState({ stopPolling });
   }
 
   loginUser(userId, handle) {
     this.setState({
       userId: userId,
-      handle: handle
+      handle: handle,
+      errorMessage: undefined
     });
   }
 
@@ -61,6 +68,7 @@ class App extends Component {
       content = (
         <div id="landing_page">
           <Landing
+            handle_error={this.handleError}
             login_user={this.loginUser}
           />
         </div>
@@ -82,21 +90,22 @@ class App extends Component {
     return (
       <div className="container">
         <h1>Chatterly</h1>
-        <p>{errors}</p>
+        <div id="error_display">
+          {this.state.errorMessage}
+        </div>
         {content}
       </div>
     );
   }
 
   componentDidMount() {
-    fetch('/rooms/1/comments').then((res) => {
-      return res.json();
-    }).then((res) => {
-      this.setState({ comments: res });
-      this.refreshComments();
-    }).catch((err) => {
-      this.setState({ err });
-    });
+    this.refreshComments();
+  }
+
+  componentWillUnmount() {
+    if (this.state.stopPolling) {
+      this.state.stopPolling();
+    }
   }
 }
 

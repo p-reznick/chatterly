@@ -4,7 +4,7 @@ class Landing extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newHandle: 'My new handle',
+      newHandle: '',
       existingHandle: ''
     };
 
@@ -31,6 +31,10 @@ class Landing extends Component {
     }).then((res) => (
       res.json()
     )).then((res) => {
+      if (res.errorMessage) {
+        this.props.handle_error(res.errorMessage);
+        return;
+      }
       const newId = res.id;
       const newHandle = res.handle;
       loginUser(newId, newHandle);
@@ -46,6 +50,10 @@ class Landing extends Component {
     fetch(url).then((res) => (
       res.json()
     )).then((res) => {
+      if (res.errorMessage) {
+        this.props.handle_error(res.errorMessage);
+        return;
+      }
       const userId = res.id;
       loginUser(userId, handle);
     });
@@ -58,7 +66,7 @@ class Landing extends Component {
         <div className="row">
           <form className="four columns" onSubmit={this.handleHandleCreation}>
             <label htmlFor="newHandle">New here?  Create a handle!</label>
-            <input className="" type="text" id="newHandle" placeholder={this.state.newHandle} onChange={this.handleNewChange} />
+            <input className="" type="text" id="newHandle" placeholder="My new handle" onChange={this.handleNewChange} />
             <input className="button-primary" type="submit" value="Create" />
           </form>
         </div>
