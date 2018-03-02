@@ -9,7 +9,8 @@ class App extends Component {
       comments: [],
       roomId: 1,
       userId: -1,
-      handle: ''
+      handle: '',
+      lastCommentId: 0
     };
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
@@ -38,10 +39,15 @@ class App extends Component {
 
   refreshComments(event) {
     if (event) event.preventDefault();
-    fetch('/rooms/1/comments').then((res) => {
+    const lastCommentId = this.state.lastCommentId;
+    fetch('/rooms/1/comments/' + lastCommentId).then((res) => {
       return res.json();
     }).then((res) => {
-      this.setState({ comments: res });
+      const newLastCommentId = res[res.length -1].id;
+      this.setState({
+        lastCommentId: newLastCommentId,
+        comments: this.state.comments.concat(res)
+      });
       console.log("Comments refreshed!");
     }).catch((err) => {
       this.setState({ err });

@@ -46,7 +46,7 @@ const Rooms = {
       }
       const roomId = req.params['room_id'];
       const lastId = req.params['last_comment_id'];
-      const sql = "SELECT comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE comments.room_id = ? AND comments.id > ?";
+      const sql = "SELECT comments.id, comments.body, comments.user_id, users.handle FROM comments JOIN users ON comments.user_id = users.id WHERE comments.room_id = ? AND comments.id > ?";
       connection.query(sql, [roomId, lastId], function(err, results, field) {
         if (err) {
           res.status(500).send(err.message);
