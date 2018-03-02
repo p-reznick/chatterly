@@ -54,17 +54,21 @@ class Landing extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Create a new handle</h2>
-        <form onSubmit={this.handleHandleCreation}>
-          <input type="text" value={this.state.newHandle} onChange={this.handleNewChange} />
-          <input type="submit" value="Create" />
-        </form>
-        <h2>Already have a handle? Login!</h2>
-        <form onSubmit={this.handleLogin}>
-          <input type="text" value={this.state.existingHandle} onChange={this.handleExistingChange} />
-          <input type="submit" value="Login" />
-        </form>
+      <div className="container">
+        <div className="row">
+          <form className="three columns" onSubmit={this.handleHandleCreation}>
+            <label htmlFor="newHandle">New here?  Create a handle!</label>
+            <input className="" type="text" id="newHandle" placeholder={this.state.newHandle} onChange={this.handleNewChange} />
+            <input className="button-primary" type="submit" value="Create" />
+          </form>
+        </div>
+        <div className="row">
+          <form className="three columns" onSubmit={this.handleLogin}>
+            <label htmlFor="login">Already have a handle? Log in!</label>
+            <input type="text" id="login" placeholder="My handle" onChange={this.handleExistingChange} />
+            <input className="button-primary" type="submit" value="Login" />
+          </form>
+        </div>
       </div>
     );
   }
