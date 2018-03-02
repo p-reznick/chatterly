@@ -46,7 +46,6 @@ class Landing extends Component {
     fetch(url).then((res) => (
       res.json()
     )).then((res) => {
-      console.log(res);
       const userId = res.id;
       loginUser(userId, handle);
     });

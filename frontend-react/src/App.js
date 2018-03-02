@@ -13,6 +13,8 @@ class App extends Component {
     };
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
+    this.refreshComments = this.refreshComments.bind(this);
+    this.refreshComments();
   }
 
   loginUser(userId, handle) {
@@ -30,8 +32,15 @@ class App extends Component {
     });
   }
 
-  refreshComments() {
-
+  refreshComments(event) {
+    if (event) event.preventDefault();
+    fetch('/rooms/1/comments').then((res) => {
+      return res.json();
+    }).then((res) => {
+      this.setState({ comments: res });
+    }).catch((err) => {
+      this.setState({ err });
+    });
   }
 
   render() {
@@ -48,6 +57,7 @@ class App extends Component {
       content = (
         <div id="chatroom">
           <Room
+            refresh_comments={this.refreshComments}
             logout_user={this.logoutUser}
             room_id={this.state.roomId}
             comments={this.state.comments}
@@ -69,6 +79,7 @@ class App extends Component {
       return res.json();
     }).then((res) => {
       this.setState({ comments: res });
+      this.refreshComments();
     }).catch((err) => {
       this.setState({ err });
     });
