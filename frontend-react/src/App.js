@@ -63,7 +63,6 @@ class App extends Component {
 
   render() {
     let content;
-    let errors = this.state.errors;
     if (this.state.userId === -1) {
       content = (
         <div id="landing_page">
@@ -90,8 +89,8 @@ class App extends Component {
     return (
       <div className="container">
         <h1>Chatterly</h1>
-        <div id="error_display">
-          {this.state.errorMessage}
+        <div className="row" id="error_display">
+          <p className="three columns">{this.state.errorMessage}</p>
         </div>
         {content}
       </div>

@@ -437,3 +437,8 @@ h1 {
   color: #fff;
   background-color: #FF4500;
 }
+
+#error_display {
+  color: #FF4500;
+  font-weight: bold;
+}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CommentList from './CommentList';
 import CommentInput from './CommentInput';
 import LogoutButton from './LogoutButton';
-import RefreshButton from './RefreshButton';
 
 class Room extends Component {
   scrollToBottom() {
