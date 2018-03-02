@@ -10,7 +10,6 @@ class Room extends Component {
     const userId = this.props.user_id;
     const roomId = this.props.room_id;
     const handle = this.props.handle;
-    console.log(this.props);
     return (
       <div>
         <h2>Current Room</h2>

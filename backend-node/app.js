@@ -25,8 +25,7 @@ app.get('/users/:handle', function (req, res) {
           return;
       }
       res.status(200);
-      const userIdObj = { user_id: results[0] }
-      res.json(userIdObj);
+      res.json(results);
     });
   });
 });
@@ -47,7 +46,15 @@ app.post('/users/:handle', function (req, res) {
           return;
       }
       res.status(201);
-      res.json();
+      const selectSql = "SELECT * FROM users WHERE handle = ?";
+      connection.query(selectSql, [handle], function (err, results, field) {
+        if (err) {
+            res.status(501).send(err.message);
+            connection.release();
+            return;
+        }
+        res.json(results[0]);
+      });
     });
   });
 });

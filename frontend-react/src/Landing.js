@@ -10,7 +10,7 @@ class Landing extends Component {
 
     this.handleNewChange = this.handleNewChange.bind(this);
     this.handleExistingChange = this.handleExistingChange.bind(this);
-    this.handleNewSubmit = this.handleNewSubmit.bind(this);
+    this.handleHandleCreation = this.handleHandleCreation.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
   }
 
@@ -22,26 +22,32 @@ class Landing extends Component {
     this.setState({ existingHandle: event.target.value });
   }
 
-  handleNewSubmit(event) {
+  handleHandleCreation(event) {
+    const loginUser = this.props.login_user;
     event.preventDefault();
     const url = 'users/' + this.state.newHandle;
     fetch(url, {
       method: 'POST'
-    }).then(() => {
-      fetch(url);
+    }).then((res) => (
+      res.json()
+    )).then((res) => {
+      const newId = res.id;
+      const newHandle = res.handle;
+      loginUser(newId, newHandle);
     });
     this.setState({ newHandle: '' });
   }
 
   handleLogin(event) {
     const loginUser = this.props.login_user;
+    const handle = this.state.existingHandle;
     event.preventDefault();
-    const url = 'users/' + this.state.existingHandle;
+    const url = 'users/' + handle;
     fetch(url).then((res) => (
       res.json()
     )).then((res) => {
-      const userId = res.user_id.id;
-      loginUser(userId, this.state.existingHandle);
+      const userId = res.id;
+      loginUser(userId, handle);
     });
     this.setState({ existingHandle: '' });
   }
@@ -51,7 +57,7 @@ class Landing extends Component {
       <div>
         <h1>Welcome to Chatterly!</h1>
         <h2>Create a new handle</h2>
-        <form onSubmit={this.handleNewSubmit}>
+        <form onSubmit={this.handleHandleCreation}>
           <input type="text" value={this.state.newHandle} onChange={this.handleNewChange} />
           <input type="submit" value="Create" />
         </form>
