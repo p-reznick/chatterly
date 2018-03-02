@@ -424,5 +424,16 @@ h1 {
   font-family: 'Pacifico', cursive;
   font-size: 8rem;
   color: #33C3F0;
-  margin: 3rem 9rem;
+  margin: 3rem;
+}
+
+.comment_handle {
+  color: #FF4500;
+  font-weight: bold;
+  border-radius: 15px;
+}
+
+.logout_button {
+  color: #fff;
+  background-color: #FF4500;
 }

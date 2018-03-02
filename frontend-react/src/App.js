@@ -80,7 +80,7 @@ class App extends Component {
       );
     }
     return (
-      <div className="Container">
+      <div className="container">
         <h1>Chatterly</h1>
         <p>{errors}</p>
         {content}

@@ -26,13 +26,12 @@ class CommentInput extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          New Comment:
-          <input type="text" value={this.state.newComment} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <div className="row">
+        <form onSubmit={this.handleSubmit}>
+          <input className="five columns" type="text" id="commentInput" value={this.state.newComment} onChange={this.handleChange} />
+          <input className="two columns" type="submit" value="Submit" />
+        </form>
+      </div>
     );
   }
 }

@@ -5,6 +5,10 @@ import LogoutButton from './LogoutButton';
 import RefreshButton from './RefreshButton';
 
 class Room extends Component {
+  scrollToBottom() {
+    window.scrollTo(0,document.querySelector("#chatroom").scrollHeight);
+  }
+
   render() {
     const comments = this.props.comments;
     const logoutUser = this.props.logout_user;
@@ -13,15 +17,7 @@ class Room extends Component {
     const handle = this.props.handle;
     const refreshComments = this.props.refresh_comments;
     return (
-      <div>
-        <h2>Current Room</h2>
-        <p>Logged in as {handle}</p>
-        <LogoutButton
-          logout_user={logoutUser}
-        />
-        <RefreshButton
-          refresh_comments={refreshComments}
-        />
+      <div className="Container">
         <CommentList
           comments={comments}
         />
@@ -30,8 +26,16 @@ class Room extends Component {
           room_id={roomId}
           refresh_comments={refreshComments}
         />
+        <LogoutButton
+          handle={handle}
+          logout_user={logoutUser}
+        />
       </div>
     );
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
   }
 }
 
