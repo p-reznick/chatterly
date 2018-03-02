@@ -55,7 +55,6 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        <h1>Welcome to Chatterly!</h1>
         <h2>Create a new handle</h2>
         <form onSubmit={this.handleHandleCreation}>
           <input type="text" value={this.state.newHandle} onChange={this.handleNewChange} />

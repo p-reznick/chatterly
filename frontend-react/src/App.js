@@ -14,7 +14,6 @@ class App extends Component {
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
     this.refreshComments = this.refreshComments.bind(this);
-    this.refreshComments();
   }
 
   loginUser(userId, handle) {
@@ -38,6 +37,7 @@ class App extends Component {
       return res.json();
     }).then((res) => {
       this.setState({ comments: res });
+      console.log("Comments refreshed!");
     }).catch((err) => {
       this.setState({ err });
     });
@@ -69,6 +69,7 @@ class App extends Component {
     }
     return (
       <div>
+        <h1>Chatterly</h1>
         {content}
       </div>
     );
