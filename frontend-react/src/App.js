@@ -30,6 +30,10 @@ class App extends Component {
     });
   }
 
+  refreshComments() {
+
+  }
+
   render() {
     let content;
     if (this.state.userId === -1) {
@@ -59,6 +63,7 @@ class App extends Component {
       </div>
     );
   }
+
   componentDidMount() {
     fetch('/rooms/1/comments').then((res) => {
       return res.json();

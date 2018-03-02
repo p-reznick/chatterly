@@ -23,8 +23,8 @@ class Landing extends Component {
   }
 
   handleHandleCreation(event) {
-    const loginUser = this.props.login_user;
     event.preventDefault();
+    const loginUser = this.props.login_user;
     const url = 'users/' + this.state.newHandle;
     fetch(url, {
       method: 'POST'
@@ -39,13 +39,14 @@ class Landing extends Component {
   }
 
   handleLogin(event) {
+    event.preventDefault();
     const loginUser = this.props.login_user;
     const handle = this.state.existingHandle;
-    event.preventDefault();
     const url = 'users/' + handle;
     fetch(url).then((res) => (
       res.json()
     )).then((res) => {
+      console.log(res);
       const userId = res.id;
       loginUser(userId, handle);
     });

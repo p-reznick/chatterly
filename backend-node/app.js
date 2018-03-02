@@ -16,7 +16,7 @@ app.get('/users/:handle', function (req, res) {
         res.status(501).send(err.message);
         return;
     }
-    const sql = 'SELECT users.id FROM users WHERE handle = ?';
+    const sql = 'SELECT * FROM users WHERE handle = ?';
     const handle = req.params['handle'];
     connection.query(sql, [handle], function (err, results, field) {
       if (err) {
@@ -25,7 +25,7 @@ app.get('/users/:handle', function (req, res) {
           return;
       }
       res.status(200);
-      res.json(results);
+      res.json(results[0]);
     });
   });
 });
