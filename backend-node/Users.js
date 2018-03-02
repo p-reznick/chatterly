@@ -3,6 +3,7 @@ const Users = {
     this.db.getConnection(function (err, connection) {
       if (err) {
           res.status(501).send(err.message);
+          connection.release();
           return;
       }
       const sql = 'SELECT * FROM users WHERE handle = ?';
@@ -14,6 +15,7 @@ const Users = {
             return;
         }
         res.status(200);
+        connection.release();
         res.json(results[0]);
       });
     });
@@ -22,6 +24,7 @@ const Users = {
     this.db.getConnection(function (err, connection) {
       if (err) {
           res.status(501).send(err.message);
+          connection.release();
           return;
       }
       const sql = 'INSERT INTO users (handle) VALUES (?)';
@@ -40,6 +43,7 @@ const Users = {
               connection.release();
               return;
           }
+          connection.release();
           res.json(results[0]);
         });
       });

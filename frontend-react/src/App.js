@@ -14,6 +14,11 @@ class App extends Component {
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
     this.refreshComments = this.refreshComments.bind(this);
+    this.pollForComments();
+  }
+
+  pollForComments() {
+    setInterval(this.refreshComments, 1000);
   }
 
   loginUser(userId, handle) {

@@ -12,7 +12,8 @@ const Rooms = {
             return;
         }
         res.status(201);
-        res.send(body + ' written into comments!');
+        connection.release();
+        res.send(results[0]);
       });
     });
   },
@@ -31,6 +32,7 @@ const Rooms = {
           connection.release();
           return;
         }
+        connection.release();
         res.json(results);
       });
     });
@@ -51,6 +53,7 @@ const Rooms = {
           connection.release();
           return;
         }
+        connection.release();
         res.json(results);
       });
     });
