@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   pollForComments() {
-    setInterval(this.refreshComments, 1000);
+    setInterval(this.refreshComments, 100);
   }
 
   loginUser(userId, handle) {
