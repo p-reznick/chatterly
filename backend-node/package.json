@@ -3,6 +3,10 @@
         "express": "^4.15.3",
         "body-parser": "^1.17.2",
         "mysql": "^2.13.0",
-        "jasmine": "^3.1.0"
+        "jasmine-node": "^1.14.5",
+        "request": "^2.83.0"
+    },
+    "scripts": {
+        "test": "./node_modules/.bin/jasmine ./spec/api_spec.js"
     }
 }
