@@ -28,8 +28,13 @@ class CommentInput extends Component {
     return (
       <div className="row">
         <form onSubmit={this.handleSubmit}>
-          <input className="five columns" type="text" id="commentInput" value={this.state.newComment} onChange={this.handleChange} />
-          <input className="two columns" type="submit" value="Submit" />
+          <input className="five columns offset-by-two"
+            type="text"
+            id="commentInput"
+            value={this.state.newComment}
+            placeholder="Type your comment!"
+            onChange={this.handleChange} />
+          <input className="three columns" type="submit" value="Send" />
         </form>
       </div>
     );

@@ -6,8 +6,8 @@ class Comment extends Component {
     const handle = this.props.handle;
     return (
       <div className="row">
-        <span className="two columns comment_handle">{handle}   </span>
-        <span className="comment_body">{body}</span>
+        <span className="comment_handle two columns offset-by-two">{handle}   </span>
+        <span className="comment_body six columns">{body}</span>
       </div>
     );
   }

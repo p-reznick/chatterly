@@ -74,7 +74,7 @@ class App extends Component {
       );
     } else {
       content = (
-        <div id="chatroom">
+        <div id="room">
           <Room
             refresh_comments={this.refreshComments}
             logout_user={this.logoutUser}
@@ -88,11 +88,15 @@ class App extends Component {
     }
     return (
       <div className="container">
-        <h1>Chatterly</h1>
-        <div className="row" id="error_display">
-          <p className="three columns">{this.state.errorMessage}</p>
+        <div>
+          <h1>Chatterly</h1>
         </div>
-        {content}
+        <div>
+          <p>{this.state.errorMessage}</p>
+        </div>
+        <div>
+          {content}
+        </div>
       </div>
     );
   }

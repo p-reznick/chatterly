@@ -6,7 +6,11 @@ class LogoutButton extends Component {
     const message = "Logged in as " + handle + ": Logout";
     return (
       <form onSubmit={this.props.logout_user}>
-        <input className="button logout_button seven columns" type="submit" value={message} />
+        <input
+          className="button logout_button"
+          type="submit"
+          value={message}
+        />
       </form>
     )
   }

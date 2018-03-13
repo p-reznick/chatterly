@@ -5,7 +5,19 @@ import LogoutButton from './LogoutButton';
 
 class Room extends Component {
   scrollToBottom() {
-    window.scrollTo(0,document.querySelector("#chatroom").scrollHeight);
+    window.scrollTo(0,document.querySelector("#room").scrollHeight);
+  }
+
+  commentsContent(comments) {
+    if (comments.length === 0) {
+      return (
+        <p>Looks like there's nothing here...</p>
+      )
+    } else {
+      return (<CommentList
+        comments={comments}
+      />)
+    }
   }
 
   render() {
@@ -16,10 +28,8 @@ class Room extends Component {
     const handle = this.props.handle;
     const refreshComments = this.props.refresh_comments;
     return (
-      <div className="Container">
-        <CommentList
-          comments={comments}
-        />
+      <div>
+        {this.commentsContent(comments)}
         <CommentInput
           user_id={userId}
           room_id={roomId}
