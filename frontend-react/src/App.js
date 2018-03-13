@@ -8,15 +8,25 @@ class App extends Component {
     this.state = {
       comments: [],
       roomId: 1,
-      userId: -1,
-      handle: '',
+      userId: this.getLocalUserId(),
+      handle: this.getLocalHandle(),
       lastCommentId: 0
     };
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
     this.refreshComments = this.refreshComments.bind(this);
     this.handleError = this.handleError.bind(this);
+    this.getLocalUserId = this.getLocalUserId.bind(this);
+    this.getLocalHandle = this.getLocalHandle.bind(this);
     this.pollForComments();
+  }
+
+  getLocalUserId() {
+    return +localStorage.getItem('userId') || -1;
+  }
+
+  getLocalHandle() {
+    return localStorage.getItem('handle') || '';
   }
 
   handleError(errorMessage) {
@@ -34,10 +44,14 @@ class App extends Component {
       handle: handle,
       errorMessage: undefined
     });
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('handle', handle);
   }
 
   logoutUser(event) {
     event.preventDefault();
+    localStorage.setItem('userId', '-1');
+    localStorage.setItem('handle', '');
     this.setState({
       userId: -1,
       handle: ''
