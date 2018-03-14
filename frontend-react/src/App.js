@@ -9,8 +9,8 @@ class App extends Component {
     this.state = {
       comments: [],
       rooms: [],
-      roomId: -1,
-      roomName: '',
+      roomId: this.getLocalRoomId(),
+      roomName: this.getLocalRoomName(),
       userId: this.getLocalUserId(),
       handle: this.getLocalHandle(),
       lastCommentId: 0
@@ -43,7 +43,6 @@ class App extends Component {
   }
 
   handleError(errorMessage) {
-    console.log("Error!");
     this.setState({ errorMessage });
   }
 
@@ -60,6 +59,7 @@ class App extends Component {
     });
     localStorage.setItem('userId', userId);
     localStorage.setItem('handle', handle);
+    console.log("state after login", this.state);
   }
 
   logoutUser(event) {
@@ -74,17 +74,16 @@ class App extends Component {
     });
   }
 
-  enterRoom(roomName) {
-    console.log(roomName);
-    fetch('/rooms/' + this.state.name).then((res) => {
-      const roomId = res.id;
-      localStorage.setItem('roomName', roomName);
-      localStorage.setItem('roomId', roomId);
-      this.setState({
-        roomName,
-        roomId,
-      });
-    });
+  enterRoom(roomName, roomId) {
+    console.log('state before room entry', this.state);
+    localStorage.setItem('roomName', roomName);
+    localStorage.setItem('roomId', roomId);
+    const newState = Object.assign({
+      roomName,
+      roomId,
+    }, this.state);
+    this.setState(newState);
+    console.log('state after room entry', this.state);
   }
 
   refreshComments(event) {

@@ -7,7 +7,6 @@ class Landing extends Component {
       newHandle: '',
       existingHandle: ''
     };
-
     this.handleNewChange = this.handleNewChange.bind(this);
     this.handleExistingChange = this.handleExistingChange.bind(this);
     this.handleHandleCreation = this.handleHandleCreation.bind(this);

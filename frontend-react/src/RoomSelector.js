@@ -4,9 +4,9 @@ import RoomDropDownInput from './RoomDropDownInput';
 class RoomSelector extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = Object.assign({
       newRoom: ''
-    };
+    }, this.state);
     this.enterRoom = this.props.enter_room;
     this.handleError = this.props.handle_error;
     this.handleNewRoomChange = this.handleNewRoomChange.bind(this);
@@ -31,7 +31,7 @@ class RoomSelector extends Component {
         this.handleError(res.errorMessage);
         return;
       }
-      this.enterRoom(this.state.newRoom);
+      this.enterRoom(this.state.newRoom, res[0].id);
     });
   }
 
