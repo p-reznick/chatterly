@@ -57,6 +57,53 @@ const Rooms = {
         res.json(results);
       });
     });
+  },
+  createRoom: function(req, res) {
+    this.db.getConnection(function (err, connection) {
+      if (err) {
+        res.status(500).send(err.message);
+        connection.release();
+        return;
+      }
+      const roomName = req.params['room_name'];
+      const sql = "INSERT INTO rooms (name) VALUES (?)";
+      connection.query(sql, [roomName], function(err, results, field) {
+        if (err) {
+          res.status(500).send(err.message);
+          connection.release();
+          return;
+        }
+        const sql = "SELECT * FROM rooms WHERE name=?";
+        connection.query(sql, [roomName], function(err, results, field) {
+          if (err) {
+            res.status(500).send(err.message);
+            connection.release();
+            return;
+          }
+          connection.release();
+          res.json(results);
+        });
+      });
+    });
+  },
+  getRoomByName: function(req, res) {
+    this.db.getConnection(function(err, connection) {
+      if (err) {
+        res.status(500).send(err.message);
+        connection.release();
+        return;
+      }
+      const sql = "SELECT * FROM rooms WHERE name=?";
+      const roomName = req.params.room_name;
+      connection.query(sql, [roomName], function(err, results, field) {
+        if (err) {
+          res.status(500).send(err.message);
+          connection.release();
+          return;
+        }
+        res.json(results);
+      });
+    });
   }
 };
 

@@ -2,7 +2,7 @@ USE challenge;
 
 CREATE TABLE rooms (
   id serial primary key,
-  name varchar(25) NOT NULL,
+  name varchar(25) NOT NULL UNIQUE,
   created_at datetime default CURRENT_TIMESTAMP
 );
 
