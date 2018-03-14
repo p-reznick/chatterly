@@ -69,7 +69,10 @@ const Rooms = {
       const sql = "INSERT INTO rooms (name) VALUES (?)";
       connection.query(sql, [roomName], function(err, results, field) {
         if (err) {
-          res.status(500).send(err.message);
+          res.status(500);
+          res.json({
+            errorMessage: "That room name already exists.  Pick another!"
+          });
           connection.release();
           return;
         }

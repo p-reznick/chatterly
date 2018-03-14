@@ -43,6 +43,7 @@ class App extends Component {
   }
 
   handleError(errorMessage) {
+    console.log("Error!");
     this.setState({ errorMessage });
   }
 
@@ -119,6 +120,7 @@ class App extends Component {
           <RoomSelector
             rooms={this.state.rooms}
             enter_room={this.enterRoom}
+            handle_error={this.handleError}
           />
         </div>
       );
@@ -132,6 +134,7 @@ class App extends Component {
             comments={this.state.comments}
             user_id={this.state.userId}
             handle={this.state.handle}
+            handle_error={this.handleError}
           />
         </div>
       );

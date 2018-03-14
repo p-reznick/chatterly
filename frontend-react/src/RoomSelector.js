@@ -8,6 +8,7 @@ class RoomSelector extends Component {
       newRoom: ''
     };
     this.enterRoom = this.props.enter_room;
+    this.handleError = this.props.handle_error;
     this.handleNewRoomChange = this.handleNewRoomChange.bind(this);
     this.handleRoomCreation = this.handleRoomCreation.bind(this);
     // this.handleRoomEntry = this.handleRoomEntry.bind(this);
@@ -23,7 +24,13 @@ class RoomSelector extends Component {
     const url = "rooms/" + this.state.newRoom;
     fetch(url, {
       method: 'POST'
-    }).then((res) => {
+    }).then((res) => (
+      res.json()
+    )).then((res) => {
+      if (res.errorMessage) {
+        this.handleError(res.errorMessage);
+        return;
+      }
       this.enterRoom(this.state.newRoom);
     });
   }
