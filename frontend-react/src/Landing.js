@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 class Landing extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    // this.state = Object.assign({
+    //   newRoom: ''
+    // }, this.state);
+    this.state = Object.assign({
       newHandle: '',
       existingHandle: ''
-    };
+    }, this.state);
     this.handleNewChange = this.handleNewChange.bind(this);
     this.handleExistingChange = this.handleExistingChange.bind(this);
     this.handleHandleCreation = this.handleHandleCreation.bind(this);
@@ -93,13 +96,11 @@ class Landing extends Component {
                 onChange={this.handleExistingChange}
               />
             </div>
-            <div className="row">
-              <input
-                className="button-primary"
-                type="submit"
-                value="Login"
-              />
-            </div>
+            <input
+              className="button-primary"
+              type="submit"
+              value="Login"
+            />
           </form>
         </div>
       </div>

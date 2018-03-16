@@ -11,7 +11,6 @@ class RoomSelector extends Component {
     this.handleError = this.props.handle_error;
     this.handleNewRoomChange = this.handleNewRoomChange.bind(this);
     this.handleRoomCreation = this.handleRoomCreation.bind(this);
-    // this.handleRoomEntry = this.handleRoomEntry.bind(this);
   }
 
   handleNewRoomChange(event) {
@@ -35,11 +34,6 @@ class RoomSelector extends Component {
     });
   }
 
-  handleRoomEntry(event) {
-    event.preventDefault();
-    this.enterRoom(event.val);
-  }
-
   render() {
     const createRoom = this.props.createRoom;
     const rooms = this.props.rooms;
@@ -47,30 +41,28 @@ class RoomSelector extends Component {
       <div>
         <form onSubmit={this.handleRoomCreation}>
           <label htmlFor="newRoom">Create a new room!</label>
-          <input
-            type="text"
-            id="newRoom"
-            placeholder="New room name"
-            onChange={this.handleNewRoomChange}
-          />
-          <input
-            className="button-primary"
-            type="submit"
-            value="Create"
-          />
+          <div>
+            <input
+              type="text"
+              id="newRoom"
+              placeholder="New room name"
+              onChange={this.handleNewRoomChange}
+            />
+          </div>
+          <div className="row">
+            <input
+              className="button-primary"
+              type="submit"
+              value="Create"
+            />
+          </div>
         </form>
-        <form onSubmit={this.handleRoomEntry}>
-          <label htmlFor="room_drop_down">Enter an existing room!</label>
-          <RoomDropDownInput
-            id='room_drop_down'
-            rooms={rooms}
-          />
-          <input
-            className="button-primary"
-            type="submit"
-            value="Enter"
-          />
-        </form>
+        <RoomDropDownInput
+          enter_room={this.enterRoom}
+          handle_error={this.handleError}
+          id='room_drop_down'
+          rooms={rooms}
+        />
       </div>
     );
   }

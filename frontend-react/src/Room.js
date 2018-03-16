@@ -11,7 +11,7 @@ class Room extends Component {
   commentsContent(comments) {
     if (comments.length === 0) {
       return (
-        <p>Looks like there's nothing here...</p>
+        <p>No comments to show... write the first!</p>
       )
     } else {
       return (<CommentList
@@ -29,6 +29,7 @@ class Room extends Component {
     const refreshComments = this.props.refresh_comments;
     return (
       <div>
+        <h3>{localStorage.getItem('roomName')}</h3>
         {this.commentsContent(comments)}
         <CommentInput
           user_id={userId}

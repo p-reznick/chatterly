@@ -13,6 +13,7 @@ const Utility = {
           connection.release();
           return;
         }
+        connection.release();
         res.json(results);
       });
     });

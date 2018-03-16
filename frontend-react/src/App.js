@@ -17,13 +17,13 @@ class App extends Component {
     };
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
+    this.enterRoom = this.enterRoom.bind(this);
     this.refreshComments = this.refreshComments.bind(this);
     this.handleError = this.handleError.bind(this);
     this.getLocalUserId = this.getLocalUserId.bind(this);
     this.getLocalHandle = this.getLocalHandle.bind(this);
     this.getLocalRoomId = this.getLocalRoomId.bind(this);
     this.getLocalRoomName = this.getLocalRoomName.bind(this);
-    this.pollForComments();
   }
 
   getLocalUserId() {
@@ -46,9 +46,13 @@ class App extends Component {
     this.setState({ errorMessage });
   }
 
-  pollForComments() {
-    const stopPolling = setInterval(this.refreshComments, 100);
+  pollForCommentsAndRooms() {
+    const stopPolling = setInterval(() => {
+      this.refreshComments();
+      this.refreshRooms();
+    }, 100);
     this.setState({ stopPolling });
+    console.log("State after interval set", this.state);
   }
 
   loginUser(userId, handle) {
@@ -66,6 +70,8 @@ class App extends Component {
     event.preventDefault();
     localStorage.setItem('userId', '-1');
     localStorage.setItem('handle', '');
+    localStorage.setItem('roomName', '');
+    localStorage.setItem('roomId', -1);
     this.setState({
       userId: -1,
       handle: '',
@@ -75,15 +81,12 @@ class App extends Component {
   }
 
   enterRoom(roomName, roomId) {
-    console.log('state before room entry', this.state);
     localStorage.setItem('roomName', roomName);
     localStorage.setItem('roomId', roomId);
-    const newState = Object.assign({
+    this.setState({
       roomName,
-      roomId,
-    }, this.state);
-    this.setState(newState);
-    console.log('state after room entry', this.state);
+      roomId
+    });
   }
 
   refreshComments(event) {
@@ -98,6 +101,19 @@ class App extends Component {
         comments: this.state.comments.concat(res)
       });
       console.log("Comments refreshed!");
+    }).catch((err) => {
+      this.setState({ err });
+    });
+  }
+
+  refreshRooms() {
+    fetch('/rooms').then((res) => (
+      res.json()
+    )).then((res) => {
+      this.setState({
+        rooms: res
+      });
+      console.log("Rooms refreshed!");
     }).catch((err) => {
       this.setState({ err });
     });
@@ -158,7 +174,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.refreshComments();
+    this.pollForCommentsAndRooms();
   }
 
   componentWillUnmount() {
