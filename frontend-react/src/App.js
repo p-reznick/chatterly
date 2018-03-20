@@ -30,6 +30,7 @@ class App extends Component {
     this.handleBlur = this.handleBlur.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.getLocalInputBlurred = this.getLocalInputBlurred.bind(this);
+    this.resetLocalStorageAndState = this.resetLocalStorageAndState.bind(this);
   }
 
   getLocalUserId() {
@@ -86,17 +87,24 @@ class App extends Component {
 
   logoutUser(event) {
     event.preventDefault();
-    // localStorage.setItem('userId', '-1');
-    // localStorage.setItem('handle', '');
-    // localStorage.setItem('roomName', '');
-    // localStorage.setItem('roomId', -1);
-    localStorage.clear();
+    this.resetLocalStorageAndState();
+    this.refreshTitle();
+  }
+
+  resetLocalStorageAndState() {
+    localStorage.setItem('userId', '-1');
+    localStorage.setItem('handle', '');
+    localStorage.setItem('roomName', '');
+    localStorage.setItem('roomId', -1);
+    localStorage.setItem('inputBlurred', 'true');
+    localStorage.setItem('blurredCommentsCount', 0);
     this.setState({
       userId: -1,
       handle: '',
       roomId: -1,
       roomName: '',
-      comments: []
+      comments: [],
+      inputBlurred: true,
     });
   }
 
@@ -121,6 +129,7 @@ class App extends Component {
       roomId,
       errorMessage: undefined
     });
+    this.refreshComments();
   }
 
   refreshComments(event) {
