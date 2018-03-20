@@ -50,7 +50,7 @@ class App extends Component {
   }
 
   getLocalBlurredCommentsCount() {
-    return localStorage.getItem('blurredCommentsCount') || 0;
+    return +localStorage.getItem('blurredCommentsCount') || 0;
   }
 
   getLocalInputBlurred() {
