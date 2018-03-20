@@ -33,7 +33,10 @@ class CommentInput extends Component {
             id="commentInput"
             value={this.state.newComment}
             placeholder="Type your comment!"
-            onChange={this.handleChange} />
+            onChange={this.handleChange}
+            onBlur={this.props.handle_blur}
+            onFocus={this.props.handle_focus}
+          />
           <input className="three columns" type="submit" value="Send" />
         </form>
       </div>

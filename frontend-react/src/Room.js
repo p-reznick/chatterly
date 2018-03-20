@@ -32,6 +32,8 @@ class Room extends Component {
         <h3>{localStorage.getItem('roomName')}</h3>
         {this.commentsContent(comments)}
         <CommentInput
+          handle_blur={this.props.handle_blur}
+          handle_focus={this.props.handle_focus}
           user_id={userId}
           room_id={roomId}
           refresh_comments={refreshComments}

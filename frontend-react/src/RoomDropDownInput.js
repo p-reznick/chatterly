@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 class RoomDropDownInput extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      roomName: 'main'
+    };
     this.handleRoomEntry = this.handleRoomEntry.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
   }
@@ -23,6 +25,9 @@ class RoomDropDownInput extends Component {
     )).then((res) => {
       if (res.errorMessage) {
         this.props.handle_error(res.errorMessage);
+        return;
+      } else if (res.length === 0) {
+        this.props.handle_error("That room is currently unavailable.  Sorry!");
         return;
       }
       this.props.enter_room(this.state.roomName, res[0].id);

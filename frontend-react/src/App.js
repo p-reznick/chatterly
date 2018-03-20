@@ -9,10 +9,12 @@ class App extends Component {
     this.state = {
       comments: [],
       rooms: [],
+      inputBlurred: this.getLocalInputBlurred(),
       roomId: this.getLocalRoomId(),
       roomName: this.getLocalRoomName(),
       userId: this.getLocalUserId(),
       handle: this.getLocalHandle(),
+      blurredCommentsCount: this.getLocalBlurredCommentsCount(),
       lastCommentId: 0
     };
     this.loginUser = this.loginUser.bind(this);
@@ -23,7 +25,11 @@ class App extends Component {
     this.getLocalUserId = this.getLocalUserId.bind(this);
     this.getLocalHandle = this.getLocalHandle.bind(this);
     this.getLocalRoomId = this.getLocalRoomId.bind(this);
+    this.getLocalBlurredCommentsCount = this.getLocalBlurredCommentsCount.bind(this);
     this.getLocalRoomName = this.getLocalRoomName.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.getLocalInputBlurred = this.getLocalInputBlurred.bind(this);
   }
 
   getLocalUserId() {
@@ -42,17 +48,30 @@ class App extends Component {
     return localStorage.getItem('roomName') || '';
   }
 
+  getLocalBlurredCommentsCount() {
+    return localStorage.getItem('blurredCommentsCount') || 0;
+  }
+
+  getLocalInputBlurred() {
+    const localVal = localStorage.getItem('inputBlurred');
+    if (localVal === 'false') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   handleError(errorMessage) {
     this.setState({ errorMessage });
   }
 
   pollForCommentsAndRooms() {
     const stopPolling = setInterval(() => {
+      this.refreshTitle();
       this.refreshComments();
       this.refreshRooms();
     }, 100);
     this.setState({ stopPolling });
-    console.log("State after interval set", this.state);
   }
 
   loginUser(userId, handle) {
@@ -63,20 +82,34 @@ class App extends Component {
     });
     localStorage.setItem('userId', userId);
     localStorage.setItem('handle', handle);
-    console.log("state after login", this.state);
   }
 
   logoutUser(event) {
     event.preventDefault();
-    localStorage.setItem('userId', '-1');
-    localStorage.setItem('handle', '');
-    localStorage.setItem('roomName', '');
-    localStorage.setItem('roomId', -1);
+    // localStorage.setItem('userId', '-1');
+    // localStorage.setItem('handle', '');
+    // localStorage.setItem('roomName', '');
+    // localStorage.setItem('roomId', -1);
+    localStorage.clear();
     this.setState({
       userId: -1,
       handle: '',
       roomId: -1,
-      roomName: ''
+      roomName: '',
+      comments: []
+    });
+  }
+
+  handleBlur(event) {
+    this.setState({
+      inputBlurred: true
+    });
+  }
+
+  handleFocus(event) {
+    this.setState({
+      inputBlurred: false,
+      blurredCommentsCount: 0
     });
   }
 
@@ -85,22 +118,31 @@ class App extends Component {
     localStorage.setItem('roomId', roomId);
     this.setState({
       roomName,
-      roomId
+      roomId,
+      errorMessage: undefined
     });
   }
 
   refreshComments(event) {
     if (event) event.preventDefault();
+
     const lastCommentId = this.state.lastCommentId;
     fetch('/rooms/' + this.state.roomId + '/comments/' + lastCommentId).then((res) => {
       return res.json();
     }).then((res) => {
-      const newLastCommentId = res[res.length -1].id;
+      const newLastCommentId = res[res.length - 1].id;
+      let newBlurredCommentsCount = 0;
+
+      if (this.state.inputBlurred === true) {
+        newBlurredCommentsCount = this.state.blurredCommentsCount + res.length;
+      }
+
       this.setState({
+        blurredCommentsCount: newBlurredCommentsCount,
         lastCommentId: newLastCommentId,
         comments: this.state.comments.concat(res)
       });
-      console.log("Comments refreshed!");
+      console.log(this.state);
     }).catch((err) => {
       this.setState({ err });
     });
@@ -113,10 +155,17 @@ class App extends Component {
       this.setState({
         rooms: res
       });
-      console.log("Rooms refreshed!");
     }).catch((err) => {
       this.setState({ err });
     });
+  }
+
+  refreshTitle() {
+    if (this.state.blurredCommentsCount > 0) {
+      document.title = "Chatterly " + "(" + this.state.blurredCommentsCount + ")";
+    } else {
+      document.title = "Chatterly";
+    }
   }
 
   generateContent() {
@@ -143,6 +192,8 @@ class App extends Component {
       return (
         <div id="room">
           <Room
+            handle_blur={this.handleBlur}
+            handle_focus={this.handleFocus}
             refresh_comments={this.refreshComments}
             logout_user={this.logoutUser}
             room_id={this.state.roomId}
